@@ -1,0 +1,29 @@
+.btn-container-incomes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  .category-incomes {
+    width: 352px;
+    border: 1px solid #CED4DA;
+    border-radius: 10px;
+    padding-left: 20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    box-sizing: border-box;
+      .plus {
+        align-content: center;
+      }
+
+    .category-incomes-title {
+      font-size: 28px;
+      font-weight: 500;
+      color: #290661;
+      margin-bottom: 10px;
+    }
+    .incomes-button {
+      gap: 10px;
+    }
+  }
+
+
+}
