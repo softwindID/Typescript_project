@@ -1,11 +1,11 @@
 <section class="side-bar">
     <div class="container-fluid layout-container">
         <div class="row flex-nowrap ">
-            <div class="col-auto col-md-3 col-xl-2  px-0 bg-white border-right">
-                <div class="logo mt-4 d-flex justify-content-center align-items-center" id="logo">
+            <div class="col-auto col-md-3 col-xl-2  px-0 pb-4 bg-white border-right">
+                <div class="logo  d-flex justify-content-center align-items-center" id="logo">
                     <img src="/images/logo.png" alt="logo">
                 </div>
-                <hr class="custom-line">
+                <div class="custom-line"></div>
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100 nav-container ">
 
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start menu" id="menu">
@@ -31,8 +31,8 @@
                         </li>
 
                         <li>
-                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-2 align-middle">
-                                <span class="ms-1 d-none d-sm-inline color-blue">Категории</span><i class="fas fa-chevron-right ms-5 color-blue arrow-icon"></i> </a>
+                            <a href="#submenu3" data-bs-toggle="collapse" class="nav-link px-2 align-middle collapsed">
+                                <span class="ms-1 d-none d-sm-inline color-blue category">Категории</span><i class="fas fa-chevron-down color-blue arrow-icon"></i> </a>
                             <ul class="collapse nav flex-column ms-1" id="submenu3" data-bs-parent="#menu">
                                 <li class="w-100">
                                     <a href="#" class="nav-link px-2"> <span class="d-none d-sm-inline color-blue">Доходы</span></a>
@@ -44,19 +44,18 @@
                             </ul>
                         </li>
                     </ul>
-                    <div class="balance text-primary px-2 mb-20"> <strong class="color-blue">Баланс: </strong> <span>500$</span>
+                    <div class="balance text-primary px mb-20"> <strong class="color-blue">Баланс: </strong> <span>500$</span>
                     </div>
                 </div>
-                <hr class="custom-line">
-                <div class="user d-flex align-items-center px-2" >
+                <div class="custom-line"></div>
+                <div class="user d-flex align-items-center px-3" >
                     <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="18" cy="18" r="18" fill="#D9D9D9"/>
                         <path d="M18 18C19.0609 18 20.0783 17.5786 20.8284 16.8284C21.5786 16.0783 22 15.0609 22 14C22 12.9391 21.5786 11.9217 20.8284 11.1716C20.0783 10.4214 19.0609 10 18 10C16.9391 10 15.9217 10.4214 15.1716 11.1716C14.4214 11.9217 14 12.9391 14 14C14 15.0609 14.4214 16.0783 15.1716 16.8284C15.9217 17.5786 16.9391 18 18 18ZM20.6667 14C20.6667 14.7072 20.3857 15.3855 19.8856 15.8856C19.3855 16.3857 18.7072 16.6667 18 16.6667C17.2928 16.6667 16.6145 16.3857 16.1144 15.8856C15.6143 15.3855 15.3333 14.7072 15.3333 14C15.3333 13.2928 15.6143 12.6145 16.1144 12.1144C16.6145 11.6143 17.2928 11.3333 18 11.3333C18.7072 11.3333 19.3855 11.6143 19.8856 12.1144C20.3857 12.6145 20.6667 13.2928 20.6667 14ZM26 24.6667C26 26 24.6667 26 24.6667 26H11.3333C11.3333 26 10 26 10 24.6667C10 23.3333 11.3333 19.3333 18 19.3333C24.6667 19.3333 26 23.3333 26 24.6667ZM24.6667 24.6613C24.6653 24.3333 24.4613 23.3467 23.5573 22.4427C22.688 21.5733 21.052 20.6667 18 20.6667C14.9467 20.6667 13.312 21.5733 12.4427 22.4427C11.5387 23.3467 11.336 24.3333 11.3333 24.6613H24.6667Z" fill="#6C757D"/>
                     </svg>
-                    <span class="d-none d-sm-inline mx-1 user-name color-blue">Roman Chernov</span>
+                    <span class="d-none d-sm-inline ms-3 user-name color-blue user-text">Roman Chernov</span>
                 </div>
             </div>
-
             <div class="col py-3  edit-incomes main-container">
                 <div class="main-page-text">Редактирование категории доходов</div>
                 <div class="create-income-input ">

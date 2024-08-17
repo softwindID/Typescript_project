@@ -22,6 +22,20 @@
 .icon-container i {
   margin-right: 10px;
 }
+.category-incomes-plus {
+  width: 352px;
+  height: 121px;
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+ // display: none;
+}
 .popup-container {
   //display: none;
   position: absolute;
@@ -32,6 +46,8 @@
   border: 1px solid #FFFFFF;
   padding-top: 40px;
   padding-bottom: 40px;
+  background-color: white;
+  z-index: 1001;
 
   .popup-title {
     margin-bottom: 20px;

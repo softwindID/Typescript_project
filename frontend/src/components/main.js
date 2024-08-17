@@ -3,6 +3,7 @@ export class Main {
         console.log('Main');
         this.createChart();
         this.createChart2();
+
     };
     createChart() {
         const ctx = document.getElementById('myChart').getContext('2d');
