@@ -5,6 +5,25 @@
 .form-control {
   border-color: #ced4da !important;
   background-color: #f8f9fa !important;
+
+}
+.date-input {
+  border: none;
+  width: 63px;
+  text-decoration: underline;
+  background-color: #f8f9fa !important;
+}
+.submenu-cat:not(.collapsed) {
+  background-color: #007bff;
+
+  span {
+    color: white;
+  }
+  .arrow-icon {
+    color: white;
+
+  }
+
 }
 .color-blue {
   color: #052C65;
@@ -59,6 +78,14 @@
 .side-bar {
   .nav-container {
     .menu {
+      gap: 1px;
+      .submenu-ul {
+        border-left: 1px solid #0D6EFD;
+        border-right: 1px solid #0D6EFD;
+        border-bottom: 1px solid #0D6EFD;
+        border-radius: 5px;
+
+      }
       li {
         a {
           color: #052C65;
@@ -117,6 +144,7 @@
           transform: rotate(-90deg);
         }
       }
+
     }
 
   }
