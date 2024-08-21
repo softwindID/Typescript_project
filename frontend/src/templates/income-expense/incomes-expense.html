@@ -1,0 +1,83 @@
+<div class="incomes-costs-page">
+            <div class="col py-3 main-container">
+                <div class="incomes-costs-main-page-text">Доходы и расходы</div>
+                <div class="create-incomes-costs-button">
+                    <button type="button" class="btn btn-success">Создать доход</button>
+                    <button type="button" class="btn btn-danger">Создать расход</button>
+                </div>
+                <div class="incomes-costs-buttons d-flex align-items-baseline">
+                    <button type="button" class="btn btn-outline-secondary">Сегодня</button>
+                    <button type="button" class="btn btn-outline-secondary">Неделя</button>
+                    <button type="button" class="btn btn-outline-secondary">Месяц</button>
+                    <button type="button" class="btn btn-outline-secondary">Год</button>
+                    <button type="button" class="btn btn-outline-secondary">Все</button>
+                    <button type="button" class="btn btn-outline-secondary">Интервал</button>
+                    <div class=" date-range-container d-flex align-items-baseline ">
+                        <form>
+                            <div class="mb-3 d-flex align-items-baseline">
+                                <span class="pe-3">с</span>
+                                <input type="text" class="form-control date-input" id="dateInput" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </form>
+                        <form>
+                            <div class="mb-3  d-flex align-items-baseline">
+                                <span class="pe-3">по</span>
+                                <input type="text" class="form-control date-input" id="dateInput2" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <table class="table table-hover text-center">
+                    <thead>
+                    <tr>
+
+                        <th scope="col">№ операции</th>
+                        <th scope="col">Тип</th>
+                        <th scope="col">Категория</th>
+                        <th scope="col">Сумма</th>
+                        <th scope="col">Дата</th>
+                        <th scope="col">Комментарий</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td >1</td>
+                        <td>доход</td>
+                        <td>зарплата</td>
+                        <td>500$</td>
+                        <td>11.09.2022</td>
+                        <td></td>
+                        <td class="icon-container">
+                            <i class="fas fa-trash-alt mr-2"></i>
+                            <i class="fas fa-pencil-alt"></i>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>расход</td>
+                        <td>жильё</td>
+                        <td>2 500$</td>
+                        <td>12.09.2022</td>
+                        <td></td>
+                        <td class="icon-container">
+                            <i class="fas fa-trash-alt mr-1"></i>
+                            <i class="fas fa-pencil-alt mr-1"></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="overlay"></div>
+            <div class="popup-container">
+                <div class="popup-title">
+                    Вы действительно хотите удалить операцию?
+                </div>
+                <div class="popup-buttons">
+                    <button type="button" class="btn btn-success">Да, удалить</button>
+                    <button type="button" class="btn btn-danger">Не удалять</button>
+                </div>
+            </div>
+        </div>
+
+

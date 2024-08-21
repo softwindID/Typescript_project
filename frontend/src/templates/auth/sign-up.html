@@ -1,0 +1,65 @@
+<section class="vh-100 auth">
+    <div class="container-fluid h-custom full-height">
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-4">
+            <div class="logo" id="logo">
+                <img src="/images/logo.png" alt="logo">
+            </div>
+
+                <div class="text-center" id="title">
+                    <h1 class="lead   me-3 mb-20 login-title">Создайте аккаунт</h1>
+                </div>
+
+            <form class=" validation-form">
+                <div class="mb-3">
+                    <div class="input-group mb-4">
+                            <span class="input-group-text" id="basic-addon">
+                                <i class="fas fa-user"></i>
+                            </span>
+                        <input type="text" class="form-control is-invalid" id="name" placeholder="ФИО" aria-label="user" required aria-describedby="basic-addon">
+                        <div class="invalid-feedback" id="invalid-feedback">
+                            Пожалуйста, введите ФИО.
+                        </div>
+                    </div>
+
+                    <div class="input-group mb-4">
+                            <span class="input-group-text" id="basic-addon1">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        <input type="text" class="form-control is-invalid" id="email" placeholder="Электронная почта" required aria-label="email" aria-describedby="basic-addon1">
+                        <div class="invalid-feedback" id="invalid-feedback2">
+                            Пожалуйста, введите правильный email.
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        <input type="text" class="form-control is-invalid" id="password" placeholder="Пароль" aria-label="password"  required aria-describedby="basic-addon2">
+                        <div class="invalid-feedback" id="invalid-feedback3">
+                            Пожалуйста, введите правильный пароль.
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-lock"></i>
+                            </span>
+                        <input type="text" class="form-control is-invalid" id="password-repeat" placeholder="Подтверждение пароля" aria-label="password"  required aria-describedby="basic-addon3">
+                        <div class="invalid-feedback" id="invalid-feedback4">
+                            Пожалуйста, подтвердите пароль.
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+
+                <div class="text-center text-lg-start mt-4 pt-2">
+                    <button  type="button" id="process-button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary w-100 validation-button">Войти</button>
+                    <p class="small fw- normal mt-2 pt-1 mb-0">Уже есть аккаунт?
+                        <a href="/login"class="link-primary">Войдите в систему</a></p>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    </div>
+</section>

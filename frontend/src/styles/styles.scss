@@ -2,6 +2,11 @@
 @import "create-incomes";
 @import "incomes-costs";
 
+.is-invalid~.invalid-feedback {
+  display: none;
+}
+
+
 .form-control {
   border-color: #ced4da !important;
   background-color: #f8f9fa !important;

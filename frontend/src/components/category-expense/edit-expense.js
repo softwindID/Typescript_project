@@ -1,4 +1,4 @@
-export class CreateCosts {
+export class EditExpense {
     constructor() {
     }
 }
