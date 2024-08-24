@@ -25,7 +25,7 @@ export class SignUp {
 
     validateForm() {
         let isValid = true;
-        if (this.nameElement.value) {
+        if (this.nameElement.value && this.nameElement.value.match(/^[А-ЯЁ][а-яё]+( [А-ЯЁ][а-яё]+)*$/)) {
             this.nameElement.classList.remove('is-invalid');
             //this.errorNameElement.style.display = 'none';
         } else {
@@ -66,10 +66,18 @@ export class SignUp {
     async signUp() {
 
         if (this.validateForm()) {
+            const fullName = this.nameElement.value.trim();
+            const [lastName, firstName] = fullName.split(' ');
+
+            if (!firstName || !lastName) {
+
+                return;
+            }
+
             const result = await HttpUtils.request('/signup', 'POST', false,{
 
-                name: this.nameElement.value,
-                //lastName: this.lastNameElement.value,
+                name: firstName,
+                lastName: lastName,
                 email: this.emailElement.value,
                 password: this.passwordElement.value,
                 passwordRepeat: this.passwordRepeatElement.value
@@ -80,7 +88,7 @@ export class SignUp {
                 return;
             }
 
-            AuthUtils.setAuthInfo(result.response.tokens.accessToken, result.response.tokens.refreshToken, {
+            AuthUtils.setAuthInfo(null, null, {
                 id: result.response.user.id,
                 name: result.response.user.name,
                 lastName: result.response.user.lastName
@@ -88,8 +96,6 @@ export class SignUp {
 
 
             this.openNewRoute('/');
-
-
 
         }
     }

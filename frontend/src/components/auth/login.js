@@ -47,15 +47,23 @@ export class Login {
                 rememberMe: this.rememberMeElement.checked
             });
 
-            if (result.error || !result.response || (result.response && !result.response.accessToken || !result.response.refreshToken || !result.response.id || !result.response.name || !result.response.lastName) ) {
+            if (result.error || !result.response || !result.response.tokens || !result.response.user) {
                 this.commonErrorElement.style.display = 'block';
                 return;
             }
 
-            AuthUtils.setAuthInfo(result.accessToken, result.refreshToken, {
-                id: result.response.id,
-                name: result.response.name,
-                lastName: result.response.lastName
+            const { tokens, user } = result.response;
+
+
+            if (!tokens.accessToken || !tokens.refreshToken || !user.id || !user.name || !user.lastName) {
+                this.commonErrorElement.style.display = 'block';
+                return;
+            }
+
+            AuthUtils.setAuthInfo(tokens.accessToken, tokens.refreshToken, {
+                id: user.id,
+                name: user.name,
+                lastName: user.lastName
             });
 
             this.openNewRoute('/');

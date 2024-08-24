@@ -1,4 +1,4 @@
-const host = 'http://localhost:9002';
+const host = 'http://localhost:3000';
 
 const config = {
     host: host,
