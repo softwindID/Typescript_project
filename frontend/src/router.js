@@ -1,6 +1,7 @@
 import {Main} from "./components/main.js";
 import {Login} from "./components/auth/login.js";
 import {SignUp} from "./components/auth/sign-up.js";
+import {Logout} from "./components/auth/logout";
 import {Incomes} from "./components/category-income/incomes";
 import {CreateIncomes} from "./components/category-income/create-incomes";
 import {EditIncomes} from "./components/category-income/edit-incomes";
@@ -10,11 +11,14 @@ import {EditExpense} from "./components/category-expense/edit-expense";
 import {CreateIncomesExpense} from "./components/income-expense/create-incomes-expense";
 import {EditIncomesExpense} from "./components/income-expense/edit-incomes-expense";
 import {IncomesExpense} from "./components/income-expense/incomes-expense";
+import {AuthUtils} from "./utils/auth-utils";
+
 
 export class Router {
     constructor() {
         this.titlePageElement =  document.getElementById('title');
         this.contentPageElement = document.getElementById('content');
+
     this.initEvents();
         this.routes = [
             {
@@ -45,12 +49,19 @@ export class Router {
                 }
             },
             {
-                route: '/incomes',
+                route: '/logout',
+                filePathTemplate: '/templates/layout.html',
+                load: () => {
+                    new Logout(this.openNewRoute.bind(this));
+                }
+            },
+            {
+                route: 'categories/income',
                 title: 'Доходы',
                 filePathTemplate: '/templates/category-income/incomes.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new Incomes();
+                    new Incomes(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -129,12 +140,30 @@ export class Router {
     }
 
     initEvents() {
+        window.addEventListener('DOMContentLoaded', () => this.handleInitialLoad());
         window.addEventListener('DOMContentLoaded', this.activateRoute.bind(this));
         window.addEventListener('popstate', this.activateRoute.bind(this));
         document.addEventListener('click', this.clickHandler.bind(this));
     }
+    async handleInitialLoad() {
+        const urlRoute = window.location.pathname;
+        if (!this.isAuthenticated() && urlRoute !== '/login' && urlRoute !== '/signup') {
+            history.replaceState({}, '', '/login');
+            await this.activateRoute();
+        } else {
+            await this.activateRoute();
+        }
+    }
+
+    isAuthenticated() {
+        return !!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);   }
+
+
 
     async openNewRoute(url) {
+        if (!await this.isAuthenticated() && url !== '/login' && url !== '/signup') {
+            url = '/login';
+        }
         const currentRoute = window.location.pathname;
         history.pushState({}, '', url);
         await this.activateRoute(null, currentRoute);

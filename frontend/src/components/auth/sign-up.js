@@ -10,7 +10,7 @@ export class SignUp {
 
 
         this.nameElement = document.getElementById('name');
-        this.errorNameElement = document.getElementById('invalid-feedback')
+       // this.errorNameElement = document.getElementById('invalid-feedback')
         this.emailElement = document.getElementById('email');
         this.errorMailElement = document.getElementById('invalid-feedback2')
         this.passwordElement = document.getElementById('password');
@@ -27,7 +27,7 @@ export class SignUp {
         let isValid = true;
         if (this.nameElement.value && this.nameElement.value.match(/^[А-ЯЁ][а-яё]+( [А-ЯЁ][а-яё]+)*$/)) {
             this.nameElement.classList.remove('is-invalid');
-            //this.errorNameElement.style.display = 'none';
+           // this.errorNameElement.style.display = 'none';
         } else {
             this.nameElement.classList.add('is-invalid');
            // this.errorNameElement.style.display = 'block';

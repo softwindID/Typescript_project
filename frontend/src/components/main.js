@@ -1,6 +1,6 @@
 export class Main {
     constructor() {
-        console.log('Main');
+
         this.createChart();
         this.createChart2();
 
