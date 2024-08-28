@@ -13,10 +13,10 @@ export class Incomes {
             this.showCategories(result);
         } else if (result.redirect) {
             this.openNewRoute(result.redirect);
-        } else if (result.error || !result.response || !result.response.categories) {
+        } else if (result.error || !result.response || !result.response) {
             alert('Возникла ошибка при запросе категорий. Обратитесь в поддержку.');
         } else {
-            this.showCategories(result.response.categories);
+            this.showCategories(result.response);
         }
 
 }

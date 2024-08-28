@@ -10,29 +10,7 @@ export class Logout {
             return this.openNewRoute('/login');
         }
 
-            this.setupEventListeners().then();
-    }
-
-       async setupEventListeners() {
-
-               const userIcon = document.getElementById('userIcon');
-               const popupMenu = document.getElementById('popupMenu');
-               const logoutButton = document.getElementById('logoutButton');
-
-               if (!userIcon || !popupMenu || !logoutButton) {
-                   return;
-               }
-
-               userIcon.addEventListener('click', async() => {
-                   console.log('User icon clicked');
-                   popupMenu.style.display = 'block';
-               });
-
-               logoutButton.addEventListener('click', async() => {
-                   console.log('Logout button clicked');
-                   popupMenu.style.display = 'none';
-                   this.logout().then();
-               });
+         this.logout().then();
     }
 
 

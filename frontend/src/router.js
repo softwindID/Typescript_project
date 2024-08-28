@@ -56,7 +56,7 @@ export class Router {
                 }
             },
             {
-                route: 'categories/income',
+                route: '/income',
                 title: 'Доходы',
                 filePathTemplate: '/templates/category-income/incomes.html',
                 useLayout: '/templates/layout.html',
@@ -141,13 +141,19 @@ export class Router {
 
     initEvents() {
         window.addEventListener('DOMContentLoaded', () => this.handleInitialLoad());
-        window.addEventListener('DOMContentLoaded', this.activateRoute.bind(this));
         window.addEventListener('popstate', this.activateRoute.bind(this));
         document.addEventListener('click', this.clickHandler.bind(this));
     }
+
     async handleInitialLoad() {
+        await this.handleRouteChange();
+    }
+
+    async handleRouteChange() {
         const urlRoute = window.location.pathname;
-        if (!this.isAuthenticated() && urlRoute !== '/login' && urlRoute !== '/signup') {
+        const isAuthenticated = await this.isAuthenticated();
+
+        if (!isAuthenticated && urlRoute !== '/login' && urlRoute !== '/signup') {
             history.replaceState({}, '', '/login');
             await this.activateRoute();
         } else {
@@ -155,9 +161,9 @@ export class Router {
         }
     }
 
-    isAuthenticated() {
-        return !!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);   }
-
+    async isAuthenticated() {
+        return !!AuthUtils.getAuthInfo(AuthUtils.accessTokenKey);
+    }
 
 
     async openNewRoute(url) {
@@ -168,6 +174,7 @@ export class Router {
         history.pushState({}, '', url);
         await this.activateRoute(null, currentRoute);
     }
+
 
     async clickHandler(e) {
         let element = null;
@@ -194,24 +201,15 @@ export class Router {
         if (oldRoute) {
 
             const currentRoute = this.routes.find(item => item.route === oldRoute);
-            if (currentRoute.styles && currentRoute.styles.length > 0) {
-                currentRoute.styles.forEach(style => {
-                    document.querySelector(`link[href='/css/${style}']`).remove();
-                });
-            }
+
             if (currentRoute.scripts && currentRoute.scripts.length > 0) {
                 currentRoute.scripts.forEach(script => {
                     document.querySelector(`script[src='/js/${script}']`).remove();
                 });
             }
-
-            if (currentRoute.unload && typeof currentRoute.load === 'function') {
-                currentRoute.unload();
-            }
         }
         const urlRoute = window.location.pathname;
         const newRoute  = this.routes.find(item => item.route === urlRoute);
-
 
        if (newRoute) {
             if (newRoute.title) {
@@ -232,5 +230,35 @@ export class Router {
            console.log('No route found');
            return
        }
+        this.setupEventListeners().then();
     }
+    async setupEventListeners() {
+
+        const userIcon = document.getElementById('userIcon');
+        const popupMenu = document.getElementById('popupMenu');
+        const logoutButton = document.getElementById('logoutButton');
+
+        if (!userIcon || !popupMenu || !logoutButton) {
+            return;
+        }
+
+        userIcon.addEventListener('click', async() => {
+            console.log('User icon clicked');
+            popupMenu.style.display = 'block';
+        });
+
+        logoutButton.addEventListener('click', async() => {
+            console.log('Logout button clicked');
+            popupMenu.style.display = 'none';
+            await this.handleLogout();
+        });
+
+    }
+    async handleLogout() {
+        const logout = new Logout((url) => {
+            this.openNewRoute(url);
+        });
+        await logout.logout();
+    }
+
 }
