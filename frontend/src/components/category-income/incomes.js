@@ -3,6 +3,7 @@ export class Incomes {
 
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
+
         this.getCategories().then();
 
     }

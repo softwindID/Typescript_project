@@ -154,10 +154,11 @@ export class Router {
         const isAuthenticated = await this.isAuthenticated();
 
         if (!isAuthenticated && urlRoute !== '/login' && urlRoute !== '/signup') {
-            history.replaceState({}, '', '/login');
+            history.pushState({}, '', '/login');
             await this.activateRoute();
         } else {
-            await this.activateRoute();
+
+            await this.activateRoute(null, urlRoute);
         }
     }
 
@@ -167,12 +168,16 @@ export class Router {
 
 
     async openNewRoute(url) {
+        const currentRoute = window.location.pathname;
+
         if (!await this.isAuthenticated() && url !== '/login' && url !== '/signup') {
             url = '/login';
         }
-        const currentRoute = window.location.pathname;
-        history.pushState({}, '', url);
-        await this.activateRoute(null, currentRoute);
+
+        if (currentRoute !== url) {
+            history.pushState({}, '', url);
+            await this.activateRoute(null, currentRoute);
+        }
     }
 
 
@@ -190,10 +195,15 @@ export class Router {
             }
             const currentRoute = window.location.pathname;
             const url = element.href.replace(window.location.origin, '');
+
+
             if (!url || (currentRoute === url.replace('/#', '')) || url.startsWith('javascript:void(0)')) {
                 return;
             }
-            await this.openNewRoute(url);
+
+            if (currentRoute !== url) {
+                await this.openNewRoute(url);
+            }
         }
     }
 
@@ -204,9 +214,13 @@ export class Router {
 
             if (currentRoute.scripts && currentRoute.scripts.length > 0) {
                 currentRoute.scripts.forEach(script => {
-                    document.querySelector(`script[src='/js/${script}']`).remove();
+                    const scriptElement = document.querySelector(`script[src='/js/${script}']`);
+                    if (scriptElement) {
+                        scriptElement.remove();
+                    }
                 });
             }
+
         }
         const urlRoute = window.location.pathname;
         const newRoute  = this.routes.find(item => item.route === urlRoute);
