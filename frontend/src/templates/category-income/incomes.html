@@ -1,46 +1,53 @@
 <div class="incomes-page">
             <div class="col py-3 main-container">
                 <div class="main-page-text">Доходы</div>
-                <div class="btn-container-incomes">
-                    <div class="category-incomes">
-                        <div class="category-incomes-title">Депозиты</div>
-                        <div class="incomes-button">
-                            <button type="button" class="btn btn-primary">Редактировать</button>
-                            <button type="button" class="btn btn-danger">Удалить</button>
-                        </div>
+                <div class="btn-container-incomes" id="categories-container">
+<!--                    <div class="category-incomes" id="category-incomes">-->
+<!--                        <div class="category-incomes-title">Депозиты</div>-->
+<!--                        <div class="incomes-button" >-->
+<!--                            <button type="button" class="btn btn-primary edit-button">Редактировать</button>-->
+<!--                            <button type="button" class="btn btn-danger delete-button">Удалить</button>-->
+<!--                        </div>-->
 
-                    </div>
-                    <div class="category-incomes">
-                        <div class="category-incomes-title">Зарплата</div>
-                        <button type="button" class="btn btn-primary">Редактировать</button>
-                        <button type="button" class="btn btn-danger">Удалить</button>
-                    </div>
-                    <div class="category-incomes">
-                        <div class="category-incomes-title">Сбережения</div>
-                        <button type="button" class="btn btn-primary">Редактировать</button>
-                        <button type="button" class="btn btn-danger">Удалить</button>
-                    </div>
-                    <div class="category-incomes">
-                        <div class="category-incomes-title">Инвестиции</div>
-                        <button type="button" class="btn btn-primary">Редактировать</button>
-                        <button type="button" class="btn btn-danger">Удалить</button>
-                    </div>
-                    <div class="category-incomes d-flex justify-content-center align-items-center">
+<!--                    </div>-->
+<!--                    <div class="category-incomes">-->
+<!--                        <div class="category-incomes-title" >Зарплата</div>-->
+<!--                        <div class="incomes-button" >-->
+<!--                        <button type="button" class="btn btn-primary" id="salary-edit-button">Редактировать</button>-->
+<!--                        <button type="button" class="btn btn-danger" id="salary-delete-button">Удалить</button>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                    <div class="category-incomes">-->
+<!--                        <div class="category-incomes-title">Сбережения</div>-->
+<!--                        <div class="incomes-button" >-->
+<!--                        <button type="button" class="btn btn-primary">Редактировать</button>-->
+<!--                        <button type="button" class="btn btn-danger">Удалить</button>-->
+<!--                    </div>-->
+<!--                    </div>-->
+<!--                    <div class="category-incomes">-->
+<!--                        <div class="category-incomes-title">Инвестиции</div>-->
+<!--                        <div class="incomes-button" >-->
+<!--                        <button type="button" class="btn btn-primary">Редактировать</button>-->
+<!--                        <button type="button" class="btn btn-danger">Удалить</button>-->
+<!--                    </div>-->
+<!--                    </div>-->
+                    <div class="category-incomes-image d-flex justify-content-center align-items-center">
                         <svg class="plus" width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M14.5469 6.08984V9.05664H0.902344V6.08984H14.5469ZM9.32422 0.511719V15.0039H6.13867V0.511719H9.32422Z" fill="#CED4DA"/>
                         </svg>
                     </div>
                 </div>
+
             </div>
             <div class="overlay"></div>
-            <div class="popup-container">
+            <div class="popup-container" id="popup-container">
                 <div class="popup-title">
                     Вы действительно хотите удалить категорию?
                     Связанные доходы будут удалены навсегда.
                 </div>
                 <div class="popup-buttons">
-                    <button type="button" class="btn btn-success">Да, удалить</button>
-                    <button type="button" class="btn btn-danger">Не удалять</button>
+                    <button type="button" class="btn btn-success" id="yes-button">Да, удалить</button>
+                    <button type="button" class="btn btn-danger" id="no-button">Не удалять</button>
                 </div>
             </div>
         </div>

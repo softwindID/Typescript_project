@@ -13,7 +13,6 @@
       .plus {
         align-content: center;
       }
-
     .category-incomes-title {
       font-size: 28px;
       font-weight: 500;
@@ -21,9 +20,21 @@
       margin-bottom: 10px;
     }
     .incomes-button {
+      display: flex;
       gap: 10px;
     }
   }
 
-
+}
+.category-incomes-image {
+  width: 352px;
+  border: 1px solid #CED4DA;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  box-sizing: border-box;
+  .plus {
+    align-content: center;
+  }
 }

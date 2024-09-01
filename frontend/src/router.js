@@ -12,12 +12,14 @@ import {CreateIncomesExpense} from "./components/income-expense/create-incomes-e
 import {EditIncomesExpense} from "./components/income-expense/edit-incomes-expense";
 import {IncomesExpense} from "./components/income-expense/incomes-expense";
 import {AuthUtils} from "./utils/auth-utils";
+import {HttpUtils} from "./utils/http-utils";
 
 
 export class Router {
     constructor() {
         this.titlePageElement =  document.getElementById('title');
         this.contentPageElement = document.getElementById('content');
+
 
     this.initEvents();
         this.routes = [
@@ -27,7 +29,7 @@ export class Router {
                 filePathTemplate: '/templates/main.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new Main();
+                    new Main(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -110,7 +112,7 @@ export class Router {
                 }
             },
             {
-                route: '/incomes-expense',
+                route: '/income-expense',
                 title: 'Расходы',
                 filePathTemplate: '/templates/income-expense/incomes-expense.html',
                 useLayout: '/templates/layout.html',
@@ -274,5 +276,6 @@ export class Router {
         });
         await logout.logout();
     }
+
 
 }
