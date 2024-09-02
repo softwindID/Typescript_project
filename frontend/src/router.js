@@ -20,7 +20,6 @@ export class Router {
         this.titlePageElement =  document.getElementById('title');
         this.contentPageElement = document.getElementById('content');
 
-
     this.initEvents();
         this.routes = [
             {
@@ -139,8 +138,40 @@ export class Router {
                 }
             },
     ];
+        document.addEventListener('DOMContentLoaded', () => {
+            this.getBalance().then();
+            this.updateUserName();
+        });
+    }
+    async getBalance() {
+        const result = await HttpUtils.request('/balance');
+        if (result.balance) {
+            this.showBalance(result.response.balance);
+        } else if (result.redirect) {
+            await this.openNewRoute(result.redirect);
+        } else if (result.error || !result.response || (result.response && (result.response.error || !result.response.balance))) {
+            return alert('Возникла ошибка при запросе баланса. Обратитесь в поддержку.');
+        } else {
+            this.showBalance(result.response.balance);
+        }
+
+    }
+    showBalance(balance) {
+        const balanceElement = document.getElementById('balance');
+        if (balanceElement) {
+            balanceElement.innerText = balance;
+        } else {
+            console.error('Не удалось найти элемент с ID "balance".');
+        }
     }
 
+    updateUserName() {
+        const userInfo = AuthUtils.getAuthInfo();
+         const userNameElement = document.getElementById('user-name');
+        if (userInfo && userNameElement) {
+            userNameElement.innerText = userInfo.user.name + ' ' + userInfo.user.lastName;
+        }
+    }
     initEvents() {
         window.addEventListener('DOMContentLoaded', () => this.handleInitialLoad());
         window.addEventListener('popstate', this.activateRoute.bind(this));
@@ -244,8 +275,11 @@ export class Router {
             }
        } else {
            console.log('No route found');
-           return
+           return;
        }
+
+        await this.getBalance();
+        this.updateUserName();
         this.setupEventListeners().then();
     }
     async setupEventListeners() {
