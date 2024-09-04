@@ -138,10 +138,7 @@ export class Router {
                 }
             },
     ];
-        document.addEventListener('DOMContentLoaded', () => {
-            this.getBalance().then();
-            this.updateUserName();
-        });
+
     }
     async getBalance() {
         const result = await HttpUtils.request('/balance');
@@ -172,6 +169,7 @@ export class Router {
             userNameElement.innerText = userInfo.user.name + ' ' + userInfo.user.lastName;
         }
     }
+
     initEvents() {
         window.addEventListener('DOMContentLoaded', () => this.handleInitialLoad());
         window.addEventListener('popstate', this.activateRoute.bind(this));
@@ -272,15 +270,27 @@ export class Router {
            }
             if (newRoute.load && typeof newRoute.load === 'function') {
                 newRoute.load();
+
+                await this.getBalance();
+                this.updateUserName();
             }
+           this.updateNavLinks();
        } else {
            console.log('No route found');
            return;
        }
 
-        await this.getBalance();
-        this.updateUserName();
-        this.setupEventListeners().then();
+       this.setupEventListeners().then();
+    }
+    updateNavLinks() {
+        const navLinks = document.querySelectorAll('#menu .nav-link');
+        navLinks.forEach(link => {
+            if (link.href === window.location.href) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
     }
     async setupEventListeners() {
 
@@ -310,6 +320,5 @@ export class Router {
         });
         await logout.logout();
     }
-
 
 }

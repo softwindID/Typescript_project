@@ -32,7 +32,7 @@ export class AuthUtils {
             return {
                 [this.accessTokenKey]: localStorage.getItem(this.accessTokenKey),
                 [this.refreshTokenKey]: localStorage.getItem(this.refreshTokenKey),
-                [this.userInfoTokenKey]: localStorage.getItem(this.userInfoTokenKey),
+                [this.userInfoTokenKey]:JSON.parse(localStorage.getItem(this.userInfoTokenKey)),
             }
         }
     }
