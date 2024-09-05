@@ -1,5 +1,4 @@
 import {HttpUtils} from "../../utils/http-utils";
-import {EditIncomes} from "./edit-incomes";
 import {AuthUtils} from "../../utils/auth-utils";
 export class Incomes {
 

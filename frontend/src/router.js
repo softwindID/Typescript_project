@@ -142,7 +142,7 @@ export class Router {
     }
     async getBalance() {
         const result = await HttpUtils.request('/balance');
-        if (result.balance) {
+        if (result.response.balance || result.response.balance === 0) {
             this.showBalance(result.response.balance);
         } else if (result.redirect) {
             await this.openNewRoute(result.redirect);
@@ -270,9 +270,11 @@ export class Router {
            }
             if (newRoute.load && typeof newRoute.load === 'function') {
                 newRoute.load();
+                if (newRoute.route !== "/login" && newRoute.route !== "/signup") {
+                    await this.getBalance();
+                    this.updateUserName();
+                }
 
-                await this.getBalance();
-                this.updateUserName();
             }
            this.updateNavLinks();
        } else {
