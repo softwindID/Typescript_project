@@ -4,10 +4,8 @@ export class Incomes {
 
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
-        this.categories = [];
+
         this.getCategories().then();
-
-
     }
 
     async getCategories() {
@@ -74,10 +72,8 @@ export class Incomes {
 
      addEventListeners() {
          const editButtonElements = document.querySelectorAll('.btn-primary');
-         const popupContainerElement = document.getElementById('popup-container');
-         const deleteButtonElement = document.querySelectorAll('.btn-danger');
-         const yesButtonElement = document.getElementById('yes-button');
-         const noButtonElement = document.getElementById('no-button');
+         const deleteButtonElements = document.querySelectorAll('.btn-danger');
+         const addCategoryButton = document.getElementById('add-category-button');
 
          editButtonElements.forEach(button => {
              button.addEventListener('click', async (event) => {
@@ -87,7 +83,7 @@ export class Incomes {
                      try {
                          const tokenUpdated = await AuthUtils.updateRefreshToken();
                          if (tokenUpdated) {
-                             window.location.href = `/edit-incomes`;
+                             window.location.href = `/edit-incomes?id=${categoryId}`;
                          } else {
                              console.error('Не удалось обновить токен');
                          }
@@ -99,6 +95,54 @@ export class Incomes {
                  }
              });
          });
+         deleteButtonElements.forEach(button => {
+
+             button.addEventListener('click', (event) => {
+                 const categoryId = event.target.getAttribute('data-category-id');
+                 if (categoryId) {
+                     this.openDeleteConfirmationPopup(categoryId);
+                 } else {
+                     console.error('ID категории не найден.');
+                 }
+             });
+         });
+         if (addCategoryButton) {
+             addCategoryButton.addEventListener('click', () => {
+                 window.location.href = '/create-incomes';
+             });
+         }
+     }
+    openDeleteConfirmationPopup(categoryId) {
+
+        const popupContainerElement = document.getElementById('popup-container');
+        const yesButtonElement = document.getElementById('yes-button');
+        const noButtonElement = document.getElementById('no-button');
+
+        popupContainerElement.style.display = 'block';
+
+        yesButtonElement.onclick = async () => {
+            try {
+                const tokenUpdated = await AuthUtils.updateRefreshToken();
+                if (tokenUpdated) {
+                    const result = await HttpUtils.request(`/categories/income/${categoryId}`, { method: 'DELETE' });
+                    if (result.success) {
+                        await this.getCategories();
+                    } else {
+                        alert('Возникла ошибка при удалении категории. Обратитесь в поддержку.');
+                    }
+                } else {
+                    console.error('Не удалось обновить токен');
+                }
+            } catch (error) {
+                console.error('Ошибка при выполнении запроса:', error);
+            } finally {
+                popupContainerElement.style.display = 'none';
+            }
+        };
+
+        noButtonElement.onclick = () => {
+            popupContainerElement.style.display = 'none';
+        };
      }
 
 }
