@@ -1,12 +1,20 @@
+import {HttpUtils} from "../utils/http-utils";
+
 export class Main {
-    constructor() {
-        console.log('Main');
+    constructor(openNewRoute) {
+        this.openNewRoute = openNewRoute;
         this.createChart();
         this.createChart2();
 
     };
+
+
     createChart() {
         const ctx = document.getElementById('myChart').getContext('2d');
+        if (!ctx) {
+            console.error('Element with id "myChart" not found');
+            return;
+        }
         const data = {
             labels: [
                 'Red',
@@ -52,6 +60,10 @@ export class Main {
     }
     createChart2() {
         const ctx = document.getElementById('myChart2').getContext('2d');
+        if (!ctx) {
+            console.error('Element with id "myChart2" not found');
+            return;
+        }
         const data = {
             labels: [
                 'Red',
