@@ -1,5 +1,5 @@
 import {HttpUtils} from "../../utils/http-utils";
-import {AuthUtils} from "../../utils/auth-utils";
+
 export class EditIncomes {
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
@@ -14,14 +14,16 @@ export class EditIncomes {
             console.error('ID категории не предоставлен.');
             return;
         }
+        if (!this.categoryId) {
+            console.error('ID категории не предоставлен.');
+            return;
+        }
         this.loadCategory().then(() => {
             this.addEventListeners();
         });
     }
     async loadCategory() {
         try {
-            const tokenUpdated = await AuthUtils.updateRefreshToken();
-            if (tokenUpdated) {
                 const result = await HttpUtils.request(`/categories/income/${this.categoryId}`);
                 if (result && result.response.title) {
                     this.categoryTitleInput.value = result.response.title;
@@ -29,9 +31,7 @@ export class EditIncomes {
                 } else {
                     console.error('Не удалось загрузить информацию о категории.');
                 }
-            } else {
-                console.error('Не удалось обновить токен');
-            }
+
         } catch (error) {
             console.error('Ошибка при выполнении запроса:', error);
         }
@@ -42,33 +42,22 @@ export class EditIncomes {
         const newTitle = this.categoryTitleInput.value.trim();
 
         try {
-            const tokenUpdated = await AuthUtils.updateRefreshToken();
-            if (tokenUpdated) {
-                const requestBody = JSON.stringify({
-
+            const result = await HttpUtils.request(`/categories/income/${this.categoryId}`, 'PUT', true,
+                {
                     title: newTitle
-                });
-                const result = await HttpUtils.request(`/categories/income/${this.categoryId}`, {
-                    method: 'PUT',
-                    body: requestBody,
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                }
+                );
 
-                });
-
-                if (newTitle &&  result.response.success) {
+                if (newTitle &&  result.response) {
                     window.location.href = `/income`;
                 } else {
                     alert('Ошибка при сохранении изменений. Попробуйте снова.');
                 }
-            } else {
-                console.error('Не удалось обновить токен');
-            }
         } catch (error) {
             console.error('Ошибка при выполнении запроса:', error);
         }
     }
+
     cancelEdit() {
         window.location.href = '/income';
     }

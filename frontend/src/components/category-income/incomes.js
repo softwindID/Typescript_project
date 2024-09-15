@@ -117,22 +117,20 @@ export class Incomes {
         const popupContainerElement = document.getElementById('popup-container');
         const yesButtonElement = document.getElementById('yes-button');
         const noButtonElement = document.getElementById('no-button');
+        const categoryElement = document.getElementsByClassName('category-incomes');
 
         popupContainerElement.style.display = 'block';
 
         yesButtonElement.onclick = async () => {
             try {
-                const tokenUpdated = await AuthUtils.updateRefreshToken();
-                if (tokenUpdated) {
-                    const result = await HttpUtils.request(`/categories/income/${categoryId}`, { method: 'DELETE' });
-                    if (result.success) {
+
+                    const result = await HttpUtils.request(`/categories/income/${categoryId}`, 'DELETE', true, null);
+                    if (result) {
                         await this.getCategories();
                     } else {
                         alert('Возникла ошибка при удалении категории. Обратитесь в поддержку.');
                     }
-                } else {
-                    console.error('Не удалось обновить токен');
-                }
+
             } catch (error) {
                 console.error('Ошибка при выполнении запроса:', error);
             } finally {

@@ -89,7 +89,7 @@ export class Router {
                 filePathTemplate: '/templates/category-expense/expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new Expense();
+                    new Expense(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -98,7 +98,7 @@ export class Router {
                 filePathTemplate: '/templates/category-expense/create-expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new CreateExpense();
+                    new CreateExpense(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -107,7 +107,7 @@ export class Router {
                 filePathTemplate: '/templates/category-expense/edit-expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new EditExpense();
+                    new EditExpense(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -116,7 +116,7 @@ export class Router {
                 filePathTemplate: '/templates/income-expense/incomes-expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new IncomesExpense();
+                    new IncomesExpense(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -125,7 +125,7 @@ export class Router {
                 filePathTemplate: '/templates/income-expense/create-incomes-expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new CreateIncomesExpense();
+                    new CreateIncomesExpense(this.openNewRoute.bind(this));
                 }
             },
             {
@@ -134,7 +134,7 @@ export class Router {
                 filePathTemplate: '/templates/income-expense/edit-incomes-expense.html',
                 useLayout: '/templates/layout.html',
                 load: () => {
-                    new EditIncomesExpense();
+                    new EditIncomesExpense(this.openNewRoute.bind(this));
                 }
             },
     ];
