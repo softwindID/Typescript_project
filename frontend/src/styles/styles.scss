@@ -245,6 +245,13 @@ h2 {
     }
   }
 }
+.overlay {
+  display: none;
+  .popup-container {
+    top: 100px;
+  }
+}
+
 
 
 

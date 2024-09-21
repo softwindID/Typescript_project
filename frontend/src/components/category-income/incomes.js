@@ -113,12 +113,13 @@ export class Incomes {
          }
      }
     openDeleteConfirmationPopup(categoryId) {
-
+        const overlayElement = document.getElementById('overlay');
         const popupContainerElement = document.getElementById('popup-container');
         const yesButtonElement = document.getElementById('yes-button');
         const noButtonElement = document.getElementById('no-button');
-        const categoryElement = document.getElementsByClassName('category-incomes');
+        overlayElement.appendChild(popupContainerElement);
 
+        overlayElement.style.display = 'flex';
         popupContainerElement.style.display = 'block';
 
         yesButtonElement.onclick = async () => {
@@ -126,7 +127,7 @@ export class Incomes {
 
                     const result = await HttpUtils.request(`/categories/income/${categoryId}`, 'DELETE', true, null);
                     if (result) {
-                        await this.getCategories();
+                        window.location.href = '/income';
                     } else {
                         alert('Возникла ошибка при удалении категории. Обратитесь в поддержку.');
                     }
@@ -140,6 +141,7 @@ export class Incomes {
 
         noButtonElement.onclick = () => {
             popupContainerElement.style.display = 'none';
+            overlayElement.style.display = 'none';
         };
      }
 
