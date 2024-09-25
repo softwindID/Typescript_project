@@ -10,6 +10,8 @@ export class IncomesExpense {
         console.log('Operation ID:', this.operationId);
 
         this.getOperations().then();
+        this.clickCreateIncomeButton();
+        this.clickCreateExpenseButton();
     }
 
     async getOperations() {
@@ -20,11 +22,32 @@ export class IncomesExpense {
                 this.showOperations(result);
 
             } else {
-                alert('Операции не найдены. Попробуем загрузить по отдельности.');
-               // await this.getOperation();
+                console.log('Операции не найдены. Создайте операции.');
+
             }
         }
     }
+
+    clickCreateIncomeButton() {
+        const createButton = document.getElementById('create-income');
+        if (createButton) {
+            createButton.addEventListener('click', () => {
+                this.createOperations().then( );
+            });
+        }
+    }
+    clickCreateExpenseButton() {
+        const createButton = document.getElementById('create-expense');
+        if (createButton) {
+            createButton.addEventListener('click', () => {
+                this.createOperations().then( );
+            });
+        }
+    }
+    async createOperations() {
+        window.location.href = '/create-incomes-expense';
+    }
+
     // async getOperation() {
     //
     //
