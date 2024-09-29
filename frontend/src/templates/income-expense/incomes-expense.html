@@ -62,20 +62,20 @@
 <!--                        <td></td>-->
 <!--                        <td class="icon-container">-->
 <!--                            <i class="fas fa-trash-alt mr-1"></i>-->
-<!--                            <i class="fas fa-pencil-alt mr-1"></i>-->
+<!--                            <i class="fas fa-pencil-alt mr-1" id="edit-icon"></i>-->
 <!--                        </td>-->
 <!--                    </tr>-->
                     </tbody>
                 </table>
             </div>
-            <div class="overlay"></div>
-            <div class="popup-container">
+            <div class="overlay" id="overlay"></div>
+            <div class="popup-container" id="popup-container">
                 <div class="popup-title">
                     Вы действительно хотите удалить операцию?
                 </div>
                 <div class="popup-buttons">
-                    <button type="button" class="btn btn-success">Да, удалить</button>
-                    <button type="button" class="btn btn-danger">Не удалять</button>
+                    <button type="button" class="btn btn-success" id="yes-button">Да, удалить</button>
+                    <button type="button" class="btn btn-danger" id="no-button">Не удалять</button>
                 </div>
             </div>
         </div>

@@ -21,13 +21,32 @@ export class CreateIncomesExpense {
     }
 
     async createOperation() {
+
+        const categoryId= document.getElementById('typeSelectCategory').value;
+        const type = document.getElementById('typeSelect').value;
+        const amount = document.getElementById('amountInput').value;
+        const date = document.getElementById('dateInputDate').value;
+        const comment = document.getElementById('commentInput').value;
+        const category = document.getElementById('typeSelectCategory').value;
+
+
+
+        if (!type || !category || !amount || !date) {
+            alert("Пожалуйста, заполните все поля.");
+            return;
+        }
+
         const createData = {
-            type: "income",
-            amount: 250,
-            date: "2022-01-01",
-            comment: "new comment",
-            //category_id: this.idCell.value;
+            id: categoryId,
+            type,
+            amount: parseFloat(amount),
+            date: toString(),
+            comment,
+            category
+
         };
+
+        console.log(createData);
 
         try {
             const tokenUpdated = await AuthUtils.updateRefreshToken();

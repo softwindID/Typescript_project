@@ -14,16 +14,22 @@ export class IncomesExpense {
         this.clickCreateExpenseButton();
     }
 
-    async getOperations() {
+    async getOperations(operationId) {
         const tokenUpdated = await AuthUtils.updateRefreshToken();
         if (tokenUpdated) {
-            const result = await HttpUtils.request('/operations');
-            if (Array.isArray(result) && result.length > 0) {
-                this.showOperations(result);
-
+           // let result = await HttpUtils.request('/operations?id=${operationId}');
+           let result = await HttpUtils.request('/operations?period=all&dateFrom=&dateTo=');
+            if (!result.error && Array.isArray(result.response) && result.response.length > 0) {
+                this.showOperations(result.response);
             } else {
-                console.log('Операции не найдены. Создайте операции.');
 
+
+
+                if (!result.error && Array.isArray(result.response) && result.response.length > 0) {
+                    this.showOperations(result.response);
+                } else {
+                    console.log('Операции не найдены. Создайте операции.');
+                }
             }
         }
     }
@@ -32,85 +38,110 @@ export class IncomesExpense {
         const createButton = document.getElementById('create-income');
         if (createButton) {
             createButton.addEventListener('click', () => {
-                this.createOperations().then( );
+                this.createOperations().then();
             });
         }
     }
+
     clickCreateExpenseButton() {
         const createButton = document.getElementById('create-expense');
         if (createButton) {
             createButton.addEventListener('click', () => {
-                this.createOperations().then( );
+                this.createOperations().then();
             });
         }
     }
+
     async createOperations() {
         window.location.href = '/create-incomes-expense';
     }
 
-    // async getOperation() {
-    //
-    //
-    //     if (!this.operationId) {
-    //         console.error('Operation ID is not defined.');
-    //         return;
-    //     }
-    //     const result = await HttpUtils.request(`/operations/${this.operationId}`);
-    //
-    //     if (result) {
-    //         this.showOperations([result]);
-    //     } else {
-    //         alert('Операция не найдена.');
-    //     }
-    //     }
 
     showOperations(data) {
         const tbody = document.getElementById('operations-tbody');
 
-            data.forEach(operation => {
-                const row = document.createElement('tr');
+        data.forEach(response => {
+            const row = document.createElement('tr');
 
-                const idCell = document.createElement('td');
-                idCell.textContent = operation.id;
+            const idCell = document.createElement('td');
+            idCell.textContent = response.id;
 
-                const typeCell = document.createElement('td');
-                typeCell.textContent = operation.type;
+            const typeCell = document.createElement('td');
+            typeCell.textContent = response.type;
 
-                const categoryCell = document.createElement('td');
-                categoryCell.textContent = operation.category;
+            const categoryCell = document.createElement('td');
+            categoryCell.textContent = response.category;
 
-                const amountCell = document.createElement('td');
-                amountCell.textContent = operation.amount;
+            const amountCell = document.createElement('td');
+            amountCell.textContent = response.amount;
 
-                const dateCell = document.createElement('td');
-                dateCell.textContent = operation.date;
+            const dateCell = document.createElement('td');
+            dateCell.textContent = response.date;
 
-                const commentCell = document.createElement('td');
-                commentCell.textContent = operation.comment;
+            const commentCell = document.createElement('td');
+            commentCell.textContent = response.comment;
 
-                const iconCell = document.createElement('td');
-                iconCell.className = 'icon-container';
+            const iconCell = document.createElement('td');
+            iconCell.className = 'icon-container';
 
-                const deleteIcon = document.createElement('i');
-                deleteIcon.className = 'fas fa-trash-alt mr-2';
-                deleteIcon.onclick = () => deleteOperation(operation.id);
+            const deleteIcon = document.createElement('i');
+            deleteIcon.className = 'fas fa-trash-alt mr-2';
+            deleteIcon.onclick = () => this.openDeleteConfirmationPopup(response.id);
 
-                const editIcon = document.createElement('i');
-                editIcon.className = 'fas fa-pencil-alt';
-                editIcon.onclick = () => editOperation(operation.id);
+            const editIcon = document.createElement('i');
+            editIcon.className = 'fas fa-pencil-alt';
+            editIcon.onclick = () => this.editOperation(response.id);
 
-                iconCell.appendChild(deleteIcon);
-                iconCell.appendChild(editIcon);
+            iconCell.appendChild(deleteIcon);
+            iconCell.appendChild(editIcon);
 
-                row.appendChild(idCell);
-                row.appendChild(typeCell);
-                row.appendChild(categoryCell);
-                row.appendChild(amountCell);
-                row.appendChild(dateCell);
-                row.appendChild(commentCell);
-                row.appendChild(iconCell);
+            row.appendChild(idCell);
+            row.appendChild(typeCell);
+            row.appendChild(categoryCell);
+            row.appendChild(amountCell);
+            row.appendChild(dateCell);
+            row.appendChild(commentCell);
+            row.appendChild(iconCell);
 
-                tbody.appendChild(row);
+            tbody.appendChild(row);
         });
+
+    }
+
+    openDeleteConfirmationPopup(operationId) {
+        const overlayElement = document.getElementById('overlay');
+        const popupContainerElement = document.getElementById('popup-container');
+        const yesButtonElement = document.getElementById('yes-button');
+        const noButtonElement = document.getElementById('no-button');
+        overlayElement.appendChild(popupContainerElement);
+
+        overlayElement.style.display = 'flex';
+        popupContainerElement.style.display = 'block';
+
+        yesButtonElement.onclick = async () => {
+            try {
+
+                const result = await HttpUtils.request(`/operations/${operationId}`, 'DELETE', true, null);
+                if (result) {
+                    window.location.href = '/incomes-expense';
+                } else {
+                    alert('Возникла ошибка при удалении операции. Обратитесь в поддержку.');
+                }
+
+            } catch (error) {
+                console.error('Ошибка при выполнении запроса:', error);
+            } finally {
+                popupContainerElement.style.display = 'none';
+            }
+        };
+
+        noButtonElement.onclick = () => {
+            popupContainerElement.style.display = 'none';
+            overlayElement.style.display = 'none';
+        };
+    }
+
+    editOperation(operationId) {
+        window.location.href = `/edit-incomes-expense?id=${operationId}`;
     }
 }
