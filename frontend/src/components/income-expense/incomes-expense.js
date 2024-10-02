@@ -1,5 +1,6 @@
 import {HttpUtils} from "../../utils/http-utils";
 import {AuthUtils} from "../../utils/auth-utils";
+import {Incomes} from "../category-income/incomes";
 
 export class IncomesExpense {
     constructor(openNewRoute) {
@@ -23,8 +24,6 @@ export class IncomesExpense {
                 this.showOperations(result.response);
             } else {
 
-
-
                 if (!result.error && Array.isArray(result.response) && result.response.length > 0) {
                     this.showOperations(result.response);
                 } else {
@@ -37,23 +36,20 @@ export class IncomesExpense {
     clickCreateIncomeButton() {
         const createButton = document.getElementById('create-income');
         if (createButton) {
-            createButton.addEventListener('click', () => {
-                this.createOperations().then();
-            });
+            createButton.addEventListener('click', () => this.createOperation('income'));
         }
     }
 
     clickCreateExpenseButton() {
         const createButton = document.getElementById('create-expense');
         if (createButton) {
-            createButton.addEventListener('click', () => {
-                this.createOperations().then();
-            });
+            createButton.addEventListener('click', () => this.createOperation('expense'));
         }
     }
 
-    async createOperations() {
-        window.location.href = '/create-incomes-expense';
+    async createOperation(type) {
+        window.location.href = `/create-incomes-expense?type=${type}`;
+
     }
 
 
@@ -123,7 +119,7 @@ export class IncomesExpense {
 
                 const result = await HttpUtils.request(`/operations/${operationId}`, 'DELETE', true, null);
                 if (result) {
-                    window.location.href = '/incomes-expense';
+                    window.location.href = '/income-expense';
                 } else {
                     alert('Возникла ошибка при удалении операции. Обратитесь в поддержку.');
                 }

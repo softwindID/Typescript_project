@@ -1,14 +1,24 @@
-import {AuthUtils} from "../../utils/auth-utils";
+
 import {HttpUtils} from "../../utils/http-utils";
+import {Incomes} from "../category-income/incomes";
+import {Expense} from "../category-expense/expense";
 
 export class CreateIncomesExpense {
     constructor() {
-       // const idCell = document.createElement('td');
-
+        this.urlParams = new URLSearchParams(window.location.search);
+        this.type = this.urlParams.get('type');
         this.setupEventListeners();
+        this.getCategories().then();
     }
     setupEventListeners() {
-                const createButton = document.getElementById('create-button');
+        const typeSelect = document.getElementById('typeSelect');
+        const createButton = document.getElementById('create-button');
+        if (typeSelect) {
+            typeSelect.addEventListener('change', () => {
+                this.type = typeSelect.value;
+                this.getCategories().then();
+            });
+        }
         if (createButton) {
             createButton.addEventListener('click', () => this.createOperation());
         }
@@ -20,9 +30,43 @@ export class CreateIncomesExpense {
         }
     }
 
+    async getCategories() {
+
+               const typeCategory = this.type === 'income' ? '/categories/income' : '/categories/expense';
+        try {
+            const result = await HttpUtils.request(typeCategory);
+
+            this.showCategories(result);
+        } catch (error) {
+            console.error('Ошибка при получении категорий:', error);
+
+        }
+
+            this.showCategories();
+
+    }
+    showCategories(categories) {
+        const categorySelect = document.getElementById('typeSelectCategory');
+
+
+        const optionElement = document.createElement('option');
+
+        optionElement.disabled = true;
+        optionElement.selected = true;
+        optionElement.textContent = 'Категория...';
+        categorySelect.appendChild(optionElement);
+
+        if (Array.isArray(categories)) {
+            categories.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.id;
+                option.textContent = category.title;
+                categorySelect.appendChild(option);
+            });
+        }
+    }
     async createOperation() {
 
-        const categoryId= document.getElementById('typeSelectCategory').value;
         const type = document.getElementById('typeSelect').value;
         const amount = document.getElementById('amountInput').value;
         const date = document.getElementById('dateInputDate').value;
@@ -37,37 +81,31 @@ export class CreateIncomesExpense {
         }
 
         const createData = {
-            id: categoryId,
             type,
             amount: parseFloat(amount),
-            date: toString(),
+            date: date,
             comment,
-            category
+            category_id: category
 
         };
 
         console.log(createData);
 
         try {
-            const tokenUpdated = await AuthUtils.updateRefreshToken();
-            if (tokenUpdated) {
                 const response = await HttpUtils.request('/operations', 'POST',  true, createData);
-
-
-                if (response.success) {
+               // window.location.href = '/income-expense';
+                if (response) {
                     window.location.href = '/income-expense';
                 } else {
                     console.log('Ошибка при создании: ' + response.message);
                 }
-            }
+
         } catch (error) {
             console.error('Ошибка:', error);
             console.log('Произошла ошибка при создании операции.');
         }
     }
-    keepData() {
 
-    }
     cancel() {
 
         window.location.href = '/income-expense';
