@@ -1,7 +1,6 @@
 
 import {HttpUtils} from "../../utils/http-utils";
-import {Incomes} from "../category-income/incomes";
-import {Expense} from "../category-expense/expense";
+
 
 export class CreateIncomesExpense {
     constructor() {
@@ -19,6 +18,7 @@ export class CreateIncomesExpense {
                 this.getCategories().then();
             });
         }
+        this.type === 'income' ? typeSelect.selectedIndex = 1 : typeSelect.selectedIndex = 2;
         if (createButton) {
             createButton.addEventListener('click', () => this.createOperation());
         }
@@ -36,18 +36,17 @@ export class CreateIncomesExpense {
         try {
             const result = await HttpUtils.request(typeCategory);
 
-            this.showCategories(result);
+            this.showCategories(result.response);
         } catch (error) {
             console.error('Ошибка при получении категорий:', error);
 
         }
 
-            this.showCategories();
 
     }
     showCategories(categories) {
         const categorySelect = document.getElementById('typeSelectCategory');
-
+        categorySelect.innerHTML = ""
 
         const optionElement = document.createElement('option');
 
@@ -57,6 +56,7 @@ export class CreateIncomesExpense {
         categorySelect.appendChild(optionElement);
 
         if (Array.isArray(categories)) {
+
             categories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category.id;
@@ -85,7 +85,7 @@ export class CreateIncomesExpense {
             amount: parseFloat(amount),
             date: date,
             comment,
-            category_id: category
+            category_id: +category
 
         };
 
@@ -93,7 +93,7 @@ export class CreateIncomesExpense {
 
         try {
                 const response = await HttpUtils.request('/operations', 'POST',  true, createData);
-               // window.location.href = '/income-expense';
+
                 if (response) {
                     window.location.href = '/income-expense';
                 } else {
