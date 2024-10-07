@@ -8,7 +8,8 @@ export class EditIncomesExpense {
         this.cancelButton = document.getElementById('cancel-button');
         this.urlParams = new URLSearchParams(window.location.search);
         this.operationId = this.urlParams.get('id');
-        console.log('Operation ID:', this.operationId);
+        this.type = this.urlParams.get('type');
+
         if (!this.operationId) {
             console.error('ID категории не предоставлен.');
             return;
@@ -16,13 +17,13 @@ export class EditIncomesExpense {
 
         this.loadOperation().then(() => {
             this.addEventListeners();
-           // this.setupEventListeners()
+
         });
     }
     async loadOperation() {
         try {
             console.log('Requesting operation with ID:', this.operationId);
-            const result = await HttpUtils.request(`/operations?id=${this.operationId}`);
+            const result = await HttpUtils.request(`/operations/${this.operationId}`);
             console.log('API Response:', result);
            if  (result && result.response) {
                 const operationId = result.response;
@@ -38,29 +39,22 @@ export class EditIncomesExpense {
             console.error('Ошибка при выполнении запроса:', error);
         }
     }
-    // setupEventListeners() {
-    //     const typeSelect = document.getElementById('typeSelect');
-    //     if (typeSelect) {
-    //         typeSelect.addEventListener('change', () => {
-    //             this.type = typeSelect.value;
-    //             this.getCategories().then();
-    //         });
-    //
-    //     }
-    //
-    // }
+
 
     fillForm(operationId) {
         console.log('Operation data:', operationId);
 
+
         if (operationId) {
-            const typeInput = document.getElementById('typeSelect');
+            const typeSelect = document.getElementById('typeSelect');
             const categoryInput = document.getElementById('typeSelectCategory');
             const amountInput = document.getElementById('amountInput');
             const dateInput = document.getElementById('dateInputDate');
             const commentInput = document.getElementById('commentInput');
 
-            if (typeInput) typeInput.value = operationId.type || '';
+            this.type = operationId.type;
+            console.log(operationId.type);
+            if (typeSelect) typeSelect.value = this.type || '';
             if (categoryInput) categoryInput.value = operationId.category || '';
             if (amountInput) amountInput.value = operationId.amount || '';
             if (dateInput) dateInput.value = operationId.date || '';
@@ -72,7 +66,29 @@ export class EditIncomesExpense {
 
 
     async getCategories() {
+        const typeSelect = document.getElementById('typeSelect');
+        const incomeOption = document.createElement('option');
+        incomeOption.value = 'income';
+        incomeOption.textContent = 'Доход';
+
+        const expenseOption = document.createElement('option');
+        expenseOption.value = 'expense';
+        expenseOption.textContent = 'Расход';
+
         const typeCategory = this.type === 'income' ? '/categories/income' : '/categories/expense';
+
+        try {
+            const result = await HttpUtils.request(typeCategory);
+            await this.showCategories(result.response);
+        } catch (error) {
+            console.error('Ошибка при получении категорий:', error);
+        }
+
+
+
+        typeSelect.appendChild(incomeOption);
+        typeSelect.appendChild(expenseOption);
+
 
         try {
             const result = await HttpUtils.request(typeCategory);
@@ -84,6 +100,7 @@ export class EditIncomesExpense {
     }
 
     async showCategories(categories) {
+
         const categorySelect = document.getElementById('typeSelectCategory');
         categorySelect.innerHTML = "";
 
@@ -143,6 +160,13 @@ export class EditIncomesExpense {
             window.location.href = '/income-expense';
         }
         addEventListeners() {
+            const typeSelect = document.getElementById('typeSelect');
+            if (typeSelect) {
+                typeSelect.addEventListener('change', () => {
+                    this.type = typeSelect.value;
+                    this.getCategories().then();
+                });
+            }
 
             if (this.createButton) {
                 this.createButton.addEventListener('click', (event) => this.saveOperation(event));

@@ -32,7 +32,7 @@ export class CreateIncomesExpense {
 
     async getCategories() {
 
-               const typeCategory = this.type === 'income' ? '/categories/income' : '/categories/expense';
+        const typeCategory = this.type === 'income' ? '/categories/income' : '/categories/expense';
         try {
             const result = await HttpUtils.request(typeCategory);
 
