@@ -8,16 +8,15 @@ export class EditIncomesExpense {
         this.cancelButton = document.getElementById('cancel-button');
         this.urlParams = new URLSearchParams(window.location.search);
         this.operationId = this.urlParams.get('id');
-        this.type = this.urlParams.get('type');
+        //this.type = this.urlParams.get('type');
+        this.response = null;
 
         if (!this.operationId) {
             console.error('ID категории не предоставлен.');
             return;
         }
-
         this.loadOperation().then(() => {
             this.addEventListeners();
-
         });
     }
     async loadOperation() {
@@ -26,10 +25,9 @@ export class EditIncomesExpense {
             const result = await HttpUtils.request(`/operations/${this.operationId}`);
             console.log('API Response:', result);
            if  (result && result.response) {
-                const operationId = result.response;
-
-                this.fillForm(operationId);
-                this.type = operationId.type;
+               this.response = result.response;
+                this.fillForm(this.response);
+                this.type = this.response.type;
                 await this.getCategories();
             } else {
                 console.error('Не удалось загрузить информацию о категории.');
@@ -40,10 +38,8 @@ export class EditIncomesExpense {
         }
     }
 
-
     fillForm(operationId) {
         console.log('Operation data:', operationId);
-
 
         if (operationId) {
             const typeSelect = document.getElementById('typeSelect');
@@ -64,7 +60,6 @@ export class EditIncomesExpense {
         }
     }
 
-
     async getCategories() {
         const typeSelect = document.getElementById('typeSelect');
         const incomeOption = document.createElement('option');
@@ -83,8 +78,11 @@ export class EditIncomesExpense {
         } catch (error) {
             console.error('Ошибка при получении категорий:', error);
         }
-
-
+        if(this.type === expenseOption.value) {
+            expenseOption.selected = true;
+        } else {
+            incomeOption.selected = true;
+        }
 
         typeSelect.appendChild(incomeOption);
         typeSelect.appendChild(expenseOption);
@@ -115,6 +113,10 @@ export class EditIncomesExpense {
                 const option = document.createElement('option');
                 option.value = category.id;
                 option.textContent = category.title;
+                if(category.title.toLowerCase() === this.response.category.toLowerCase()) {
+                    option.selected = true;
+
+                }
                 categorySelect.appendChild(option);
             });
 
@@ -142,7 +144,7 @@ export class EditIncomesExpense {
             amount: parseFloat(amount),
             date,
             comment,
-            category
+            category_id: +category
         };
 
         try {
