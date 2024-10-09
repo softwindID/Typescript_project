@@ -7,18 +7,18 @@
                 <button type="button" class="btn btn-outline-secondary">Месяц</button>
                 <button type="button" class="btn btn-outline-secondary">Год</button>
                 <button type="button" class="btn btn-outline-secondary">Все</button>
-                <button type="button" class="btn btn-outline-secondary">Интервал</button>
+                <button type="button" class="btn btn-outline-secondary" id='interval-button'>Интервал</button>
                         <div class=" date-range-container">
                             <form>
                                 <div class="mb-3 d-flex align-items-center">
                                     <span class="pe-3">с</span>
-                                    <input type="text" class="form-control date-input" id="dateInput" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control date-input" id='date-from' placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </form>
                             <form>
                                 <div class="mb-3  d-flex align-items-center">
                                     <span class="pe-3">по</span>
-                                    <input type="text" class="form-control date-input" id="dateInput2" placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
+                                    <input type="text" class="form-control date-input" id='date-to' placeholder="Дата" onfocus="(this.type='date')" onblur="(this.type='text')">
                                 </div>
                             </form>
                         </div>

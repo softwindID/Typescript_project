@@ -8,19 +8,41 @@ export class IncomesExpense {
 
         console.log('Operation ID:', this.operationId);
 
-        this.getOperations().then();
+        this.getOperations('Сегодня').then();
         this.clickCreateIncomeButton();
         this.clickCreateExpenseButton();
         this.setupFilters();
 
+        this.initDateSelection();
     }
 
     setupFilters() {
         const filterButtons = document.querySelectorAll('.incomes-costs-buttons button');
         filterButtons.forEach(button => {
             button.addEventListener('click', (e) => this.handleFilterButtonClick(e));
+
         });
     }
+    initDateSelection() {
+        const dateFromInput = document.getElementById('date-from');
+        const dateToInput = document.getElementById('date-to');
+        const intervalButton = document.getElementById('interval-button');
+
+        intervalButton.disabled = true;
+
+        [dateFromInput, dateToInput].forEach(input => {
+            input.addEventListener('change', () => {
+                const dateFromValid = dateFromInput.value !== '';
+                const dateToValid = dateToInput.value !== '';
+                intervalButton.disabled = !(dateFromValid && dateToValid);
+            });
+        });
+
+        intervalButton.addEventListener('click', async () => {
+            await this.getOperations(dateFromInput.value, dateToInput.value);
+        });
+    }
+
 
     handleFilterButtonClick(event) {
         const button = event.target;
@@ -54,12 +76,15 @@ export class IncomesExpense {
             case 'Все':
                 result = await HttpUtils.request('/operations?period=all&dateFrom=&dateTo=');
                 break;
+            case 'Интервал':
+                result = await HttpUtils.request('/operations?period=&dateFrom=&dateTo=');
+                break;
             default:
                 console.log('Неизвестный фильтр');
                 return;
         }
 
-        if (!result.error && Array.isArray(result.response) && result.response.length > 0) {
+        if (!result.error && Array.isArray(result.response)) {
             this.showOperations(result.response);
         } else {
             console.log('Операции не найдены. Создайте операции.');
