@@ -3,15 +3,16 @@ import {HttpUtils} from "../utils/http-utils";
 export class Main {
     constructor(openNewRoute) {
         this.openNewRoute = openNewRoute;
-        this.createChart();
-        this.createChart2();
 
+        this.expensesChart = null;
+        this.incomesChart = null;
         this.getOperations('Сегодня').then();
 
         this.setupFilters();
 
         this.initDateSelection();
     };
+
     setupFilters() {
         const filterButtons = document.querySelectorAll('.incomes-costs-buttons button');
         filterButtons.forEach(button => {
@@ -19,6 +20,7 @@ export class Main {
 
         });
     }
+
     initDateSelection() {
         const dateFromInput = document.getElementById('date-from');
         const dateToInput = document.getElementById('date-to');
@@ -71,6 +73,7 @@ export class Main {
                 break;
             case 'Все':
                 result = await HttpUtils.request('/operations?period=all&dateFrom=&dateTo=');
+                console.log('Полученные данные:', result.response);
                 break;
             case 'Интервал':
                 result = await HttpUtils.request('/operations?period=&dateFrom=&dateTo=');
@@ -80,79 +83,46 @@ export class Main {
                 return;
         }
 
-        // if (!result.error && Array.isArray(result.response)) {
-        //     this.showOperations(result.response);
-        // } else {
-        //     console.log('Операции не найдены. Создайте операции.');
-        // }
+        if (!result.error && Array.isArray(result.response)) {
+            const expenses = this.filterByType(result.response, 'expense');
+            const incomes = this.filterByType(result.response, 'income');
+
+            const groupedExpenses = this.groupByCategory(expenses);
+            const groupedIncomes = this.groupByCategory(incomes);
+
+            const expensesChartData = this.prepareChartData(groupedExpenses);
+            const incomesChartData = this.prepareChartData(groupedIncomes);
+
+            this.createChart(expensesChartData); // Для расходов
+            this.createChart2(incomesChartData); // Для доходов
+        } else {
+            console.log('Операции не найдены. Создайте операции.');
+        }
     }
 
-    createChart() {
-        const ctx = document.getElementById('myChart').getContext('2d');
-        if (!ctx) {
-            console.error('Element with id "myChart" not found');
-            return;
-        }
-        const data = {
-            labels: [
-                'Red',
-                "Orange",
-                'Yellow',
-                "Green",
-                'Blue',
-            ],
-            datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100, 200, 150],
-                backgroundColor: [
-                    '#DC3545',
-                    '#FD7E14',
-                    '#FFC107',
-                    '#20C997',
-                    '#0D6EFD'
+    filterByType(data, type) {
+        return data.filter(item => item.type === type);
+    }
 
-    ],
-                hoverOffset: 4
-            }]
-        };
-
-        new Chart(ctx, {
-            type: 'pie',
-            data: data,
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return tooltipItem.label + ': ' + tooltipItem.raw;
-                            }
-                        }
-                    }
-                }
+    groupByCategory(data) {
+        return data.reduce((sum, item) => {
+            if (!sum[item.category]) {
+                sum[item.category] = 0;
             }
-        });
+            sum[item.category] += item.amount;
+            return sum;
+        }, {});
     }
-    createChart2() {
-        const ctx = document.getElementById('myChart2').getContext('2d');
-        if (!ctx) {
-            console.error('Element with id "myChart2" not found');
-            return;
-        }
-        const data = {
-            labels: [
-                'Red',
-                "Orange",
-                'Yellow',
-                "Green",
-                'Blue',
-            ],
+
+    prepareChartData(groupedData) {
+        const labels = Object.keys(groupedData);
+        const amounts = Object.values(groupedData);
+
+        return {
+            labels,
             datasets: [{
-                label: 'My First Dataset',
-                data: [300, 50, 100, 200, 150],
+                label: 'Суммы по категориям',
+                data: amounts,
                 backgroundColor: [
                     '#DC3545',
                     '#FD7E14',
@@ -163,8 +133,20 @@ export class Main {
                 hoverOffset: 4
             }]
         };
-
-        new Chart(ctx, {
+    }
+    destroyChart(chart) {
+        if (chart) {
+            chart.destroy();
+        }
+    }
+    createChart(data) {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        if (!ctx) {
+            console.error('Element with id "myChart" not found');
+            return;
+        }
+        this.destroyChart(this.expensesChart);
+        this.expensesChart = new Chart(ctx, {
             type: 'pie',
             data: data,
             options: {
@@ -175,7 +157,7 @@ export class Main {
                     },
                     tooltip: {
                         callbacks: {
-                            label: function(tooltipItem) {
+                            label: function (tooltipItem) {
                                 return tooltipItem.label + ': ' + tooltipItem.raw;
                             }
                         }
@@ -184,4 +166,35 @@ export class Main {
             }
         });
     }
+
+
+
+        createChart2(data)
+        {
+            const ctx = document.getElementById('myChart2').getContext('2d');
+            if (!ctx) {
+                console.error('Element with id "myChart2" not found');
+                return;
+            }
+            this.destroyChart(this.incomesChart);
+            this.incomesChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return tooltipItem.label + ': ' + tooltipItem.raw;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
 }
