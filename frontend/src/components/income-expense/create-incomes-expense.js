@@ -5,7 +5,9 @@ import {HttpUtils} from "../../utils/http-utils";
 export class CreateIncomesExpense {
     constructor() {
         this.urlParams = new URLSearchParams(window.location.search);
+
         this.type = this.urlParams.get('type');
+
         this.setupEventListeners();
         this.getCategories().then();
     }
@@ -67,7 +69,12 @@ export class CreateIncomesExpense {
     }
     async createOperation() {
 
-        const type = document.getElementById('typeSelect').value;
+        let type = document.getElementById('typeSelect').value;
+        if (type === 'income') {
+            type = 'доход';
+        } else {
+            type = 'расход';
+        }
         const amount = document.getElementById('amountInput').value;
         const date = document.getElementById('dateInputDate').value;
         const comment = document.getElementById('commentInput').value;
@@ -81,10 +88,10 @@ export class CreateIncomesExpense {
         }
 
         const createData = {
-            type,
+            type: type,
             amount: parseFloat(amount),
             date: date,
-            comment,
+            comment: comment,
             category_id: +category
 
         };
@@ -92,12 +99,12 @@ export class CreateIncomesExpense {
         console.log(createData);
 
         try {
-                const response = await HttpUtils.request('/operations', 'POST',  true, createData);
+                const result = await HttpUtils.request('/operations', 'POST',  true, createData);
 
-                if (response) {
+                if (result.response) {
                     window.location.href = '/income-expense';
                 } else {
-                    console.log('Ошибка при создании: ' + response.message);
+                    console.log('Ошибка при создании: ' + result.message);
                 }
 
         } catch (error) {

@@ -52,11 +52,13 @@ export class Main {
         button.classList.add('active');
 
         const filterType = button.textContent.trim();
-        this.getOperations(filterType).then();
+        if (filterType !== 'Интервал') {
+            this.getOperations(filterType).then();
+        }
     }
 
 
-    async getOperations(filterType) {
+    async getOperations(filterType, dateFrom, dateTo) {
         let result;
         switch (filterType) {
             case 'Сегодня':
@@ -76,7 +78,7 @@ export class Main {
                 console.log('Полученные данные:', result.response);
                 break;
             case 'Интервал':
-                result = await HttpUtils.request('/operations?period=&dateFrom=&dateTo=');
+                result = await HttpUtils.request(`/operations?period=interval&dateFrom=${dateFrom}&dateTo=${dateTo}`);
                 break;
             default:
                 console.log('Неизвестный фильтр');

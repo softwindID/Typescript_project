@@ -39,7 +39,7 @@ export class IncomesExpense {
         });
 
         intervalButton.addEventListener('click', async () => {
-            await this.getOperations(dateFromInput.value, dateToInput.value);
+            await this.getOperations('Интервал', dateFromInput.value, dateToInput.value);
         });
     }
 
@@ -54,11 +54,14 @@ export class IncomesExpense {
         button.classList.add('active');
 
         const filterType = button.textContent.trim();
-        this.getOperations(filterType).then();
+
+        if (filterType !== 'Интервал') {
+            this.getOperations(filterType).then();
+        }
     }
 
 
-    async getOperations(filterType) {
+    async getOperations(filterType, dateFrom, dateTo) {
         let result;
         switch (filterType) {
             case 'Сегодня':
@@ -77,7 +80,7 @@ export class IncomesExpense {
                 result = await HttpUtils.request('/operations?period=all&dateFrom=&dateTo=');
                 break;
             case 'Интервал':
-                result = await HttpUtils.request('/operations?period=&dateFrom=&dateTo=');
+                result = await HttpUtils.request(`/operations?period=interval&dateFrom=${dateFrom}&dateTo=${dateTo}`);
                 break;
             default:
                 console.log('Неизвестный фильтр');
@@ -196,9 +199,12 @@ export class IncomesExpense {
             };
         }
 
-        editOperation(operationId) {
-
+    editOperation(operationId) {
+        if (operationId) {
             window.location.href = `/edit-incomes-expense?id=${operationId}`;
+        } else {
+            console.error('ID операции отсутствует.');
         }
+    }
 
 }
