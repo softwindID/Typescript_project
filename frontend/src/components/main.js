@@ -95,8 +95,8 @@ export class Main {
             const expensesChartData = this.prepareChartData(groupedExpenses);
             const incomesChartData = this.prepareChartData(groupedIncomes);
 
-            this.createChart(expensesChartData); // Для расходов
-            this.createChart2(incomesChartData); // Для доходов
+            this.createChart2(expensesChartData);
+            this.createChart(incomesChartData);
         } else {
             console.log('Операции не найдены. Создайте операции.');
         }
@@ -147,8 +147,8 @@ export class Main {
             console.error('Element with id "myChart" not found');
             return;
         }
-        this.destroyChart(this.expensesChart);
-        this.expensesChart = new Chart(ctx, {
+        this.destroyChart(this.incomesChartData);
+        this.incomesChartData = new Chart(ctx, {
             type: 'pie',
             data: data,
             options: {
@@ -178,8 +178,8 @@ export class Main {
                 console.error('Element with id "myChart2" not found');
                 return;
             }
-            this.destroyChart(this.incomesChart);
-            this.incomesChart = new Chart(ctx, {
+            this.destroyChart(this.expensesChartData);
+            this.expensesChartData = new Chart(ctx, {
                 type: 'pie',
                 data: data,
                 options: {

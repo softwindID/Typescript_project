@@ -68,13 +68,7 @@ export class CreateIncomesExpense {
         }
     }
     async createOperation() {
-
-        let type = document.getElementById('typeSelect').value;
-        if (type === 'income') {
-            type = 'доход';
-        } else {
-            type = 'расход';
-        }
+        const type = document.getElementById('typeSelect').value;
         const amount = document.getElementById('amountInput').value;
         const date = document.getElementById('dateInputDate').value;
         const comment = document.getElementById('commentInput').value;
@@ -82,7 +76,7 @@ export class CreateIncomesExpense {
 
 
 
-        if (!type || !category || !amount || !date) {
+        if (!type || !Number(category) || !amount || !date || !comment) {
             alert("Пожалуйста, заполните все поля.");
             return;
         }
