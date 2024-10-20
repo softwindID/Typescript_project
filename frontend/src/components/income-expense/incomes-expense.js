@@ -125,7 +125,8 @@ export class IncomesExpense {
                 idCell.textContent = response.id;
 
                 const typeCell = document.createElement('td');
-                typeCell.textContent = response.type;
+                typeCell.textContent = response.type === 'income' ? 'доход' : 'расход';
+                typeCell.style.color = response.type === 'income' ? 'green' : 'red';
 
                 const categoryCell = document.createElement('td');
                 categoryCell.textContent = response.category;
